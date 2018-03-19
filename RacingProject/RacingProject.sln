@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio for Mac
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacingProject.Plugins", "RacingProject.Plugins.csproj", "{AEDEE06D-3A23-E144-04A2-6DDA2A70B28B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacingProject", "RacingProject.csproj", "{B1FCA4BC-2E80-80E1-6568-842B4AD778F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RacingProject.Editor.Plugins", "RacingProject.Editor.Plugins.csproj", "{88DAF16D-3126-6FD3-4A27-4664568A625B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEDEE06D-3A23-E144-04A2-6DDA2A70B28B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEDEE06D-3A23-E144-04A2-6DDA2A70B28B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEDEE06D-3A23-E144-04A2-6DDA2A70B28B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEDEE06D-3A23-E144-04A2-6DDA2A70B28B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1FCA4BC-2E80-80E1-6568-842B4AD778F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1FCA4BC-2E80-80E1-6568-842B4AD778F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1FCA4BC-2E80-80E1-6568-842B4AD778F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1FCA4BC-2E80-80E1-6568-842B4AD778F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88DAF16D-3126-6FD3-4A27-4664568A625B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88DAF16D-3126-6FD3-4A27-4664568A625B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88DAF16D-3126-6FD3-4A27-4664568A625B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88DAF16D-3126-6FD3-4A27-4664568A625B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
