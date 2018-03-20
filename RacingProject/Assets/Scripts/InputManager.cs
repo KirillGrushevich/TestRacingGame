@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using UnityStandardAssets.CrossPlatformInput;
 
 public class InputManager : CreateSingletonGameObject<InputManager>
 {
-    public Action<object, InputType, Vector2, float> InputAction = (sender, type, vec, param) => { };
+    public Action<object, InputType, Vector2, float> InputAction = (sender, type, vec, param) => { /*sender to input log, debug or replay*/ };
 
     public enum InputType
     {
@@ -15,33 +15,15 @@ public class InputManager : CreateSingletonGameObject<InputManager>
         fire
     }
 
-
-    private Vector2 movementAxis;
-    private Vector2 towerAxis;
-
-
-
-#if UNITY_EDITOR
+    private Vector2 axis;
 
     private void Update()
     {
         //Movement Axis
-        movementAxis.x = Input.GetAxis("Horizontal");
-        movementAxis.y = Input.GetAxis("Vertical");
-
-        if (Mathf.Abs(movementAxis.x) > 0.01f || Mathf.Abs(movementAxis.y) > 0.01f)
-        {
-            InputAction(this, InputType.movement, movementAxis, 0);
-        }
-
+        InputAction(this, InputType.movement, GetAxis("Horizontal", "Vertical"), 0);    
 
         //Tower Axis
-        towerAxis.x = Input.GetAxis("Mouse X");
-        //towerAxis.y = Input.GetAxis("Mouse Y");
-        if (Mathf.Abs(towerAxis.x) > 0.01f)
-        {
-            InputAction(this, InputType.tower, towerAxis, 0);
-        }
+        InputAction(this, InputType.tower, GetAxis("Mouse X", "Mouse Y"), 0);    
 
 
         //Shoot button
@@ -52,6 +34,21 @@ public class InputManager : CreateSingletonGameObject<InputManager>
 
     }
 
-#endif
+    private Vector2 GetAxis(string axisX, string axisY)
+    {
+        axis.x = Input.GetAxis(axisX);
+        if (Mathf.Abs(axis.x) < 0.01f)
+        {
+            axis.x = CrossPlatformInputManager.GetAxis(axisX);
+        }
+
+        axis.y = Input.GetAxis(axisY);
+        if (Mathf.Abs(axis.y) < 0.01f)
+        {
+            axis.y = CrossPlatformInputManager.GetAxis(axisY);
+        }
+        return axis;
+    }
+
 }
 
