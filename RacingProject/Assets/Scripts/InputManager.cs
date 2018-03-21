@@ -4,9 +4,9 @@ using UnityEngine;
 using System;
 using UnityStandardAssets.CrossPlatformInput;
 
-public class InputManager : CreateSingletonGameObject<InputManager>
+public class InputManager : MonoBehaviour
 {
-    public Action<object, InputType, Vector2, float> InputAction = (sender, type, vec, param) => { /*sender to input log, debug or replay*/ };
+    public static Action<object, InputType, Vector2, float> InputAction = (sender, type, vec, param) => { /*sender to input log, debug or replay*/ };
 
     public enum InputType
     {
@@ -23,7 +23,7 @@ public class InputManager : CreateSingletonGameObject<InputManager>
         InputAction(this, InputType.movement, GetAxis("Horizontal", "Vertical"), 0);    
 
         //Tower Axis
-        InputAction(this, InputType.tower, GetAxis("Mouse X", "Mouse Y"), 0);    
+        InputAction(this, InputType.tower, GetAxis("HorizontalR", "VerticalR"), 0);    
 
 
         //Shoot button

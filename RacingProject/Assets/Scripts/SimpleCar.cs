@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[RequireComponent(typeof(Rigidbody))]
 public class SimpleCar : MonoBehaviour
 {
+    public static Action<object, float, float> UpdateSpeed = (obj, speed, maxSpeed) => { };
 
     public enum DriveType
     {
@@ -20,12 +23,19 @@ public class SimpleCar : MonoBehaviour
     [SerializeField]
     private float maxTorque = 500f;
     [SerializeField]
+    private float BrackeTorque = 1000f;
+    [SerializeField]
+    private float MaxSpeed = 20f;
+    private float speed;
+    private float accelerator;
+    [SerializeField]
     private float maxSteerAngle = 45f;
     [SerializeField]
     private Transform[] WheelMesh = new Transform[4];
     [SerializeField]
     private WheelCollider[] WheelCollider = new WheelCollider[4];
 
+    [SerializeField]
     private Rigidbody Rig;
 
     int fromWheelsUodate;
@@ -34,23 +44,29 @@ public class SimpleCar : MonoBehaviour
 
     float steer;
     float torque;
+    float brakeTorque;
 
-    private void Start()
+	private void Reset()
+	{
+        Rig = GetComponent<Rigidbody>();
+	}
+
+	private void Start()
     {
-        InputManager.Instance.InputAction += UpdateAxes;
+        InputManager.InputAction += UpdateAxes;
 
         if (CarDriveType == DriveType.RearWheelDrive)
             fromWheelsUodate = 2;
         if (CarDriveType == DriveType.FrontWheelDrive)
             toWheelsUpdate = 2;
 
-        Rig = GetComponent<Rigidbody>();
         Rig.centerOfMass = CenterOfMass.localPosition;
     }
 
+
 	private void OnDestroy()
 	{
-        InputManager.Instance.InputAction -= UpdateAxes;
+        InputManager.InputAction -= UpdateAxes;
 	}
 
     private void UpdateAxes(object obj, InputManager.InputType type, Vector2 vec, float param)
@@ -59,13 +75,33 @@ public class SimpleCar : MonoBehaviour
             return;
 
         steer = vec.x * maxSteerAngle;
-        torque = vec.y * maxTorque;
+
+        accelerator = Mathf.Lerp(accelerator, vec.y, Time.deltaTime * 2f);
+        accelerator = vec.y > 0 ? accelerator : accelerator * -1;
+
+        if (Vector3.Dot(transform.forward, Rig.velocity.normalized) < 0 ) 
+        {
+            print("back");
+            //torque = 0;
+            //brakeTorque = BrackeTorque;
+            //return;
+        }
+
+        if (speed >= MaxSpeed)
+        {
+            accelerator = Mathf.Lerp(accelerator, 0, Time.deltaTime * 10f);
+        }
+
+        torque = vec.y * maxTorque * accelerator;
     }
 
 
 	public void Update()
     {
         UpdateMeshes();
+        speed = Rig.velocity.magnitude;
+        if (speed > 0.01f)
+            UpdateSpeed(this, speed, MaxSpeed);
     }
 
     public void FixedUpdate()
@@ -76,6 +112,7 @@ public class SimpleCar : MonoBehaviour
         for (int i = fromWheelsUodate; i < toWheelsUpdate; i++)
         {
             WheelCollider[i].motorTorque = torque;
+            WheelCollider[i].brakeTorque = brakeTorque;
         }
     }
     public void UpdateMeshes()

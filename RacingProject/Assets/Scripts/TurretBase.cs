@@ -36,12 +36,12 @@ public class TurretBase : MonoBehaviour
 
 	private void Start()
 	{
-        InputManager.Instance.InputAction += Rotate;
+        InputManager.InputAction += Rotate;
 	}
 
 	private void OnDisable()
 	{
-        InputManager.Instance.InputAction -= Rotate;
+        InputManager.InputAction -= Rotate;
 	}
 
 

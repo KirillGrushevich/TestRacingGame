@@ -116,8 +116,11 @@
     <Compile Include="Assets\Scripts\CreateSingletonGameObject.cs" />
     <Compile Include="Assets\Scripts\Grenade.cs" />
     <Compile Include="Assets\Scripts\GrenadeLauncher.cs" />
+    <Compile Include="Assets\Scripts\Health.cs" />
     <Compile Include="Assets\Scripts\IHealth.cs" />
     <Compile Include="Assets\Scripts\InputManager.cs" />
+    <Compile Include="Assets\Scripts\LevelGenerator.cs" />
+    <Compile Include="Assets\Scripts\RacingUI.cs" />
     <Compile Include="Assets\Scripts\SimpleCar.cs" />
     <Compile Include="Assets\Scripts\TurretBase.cs" />
   </ItemGroup>

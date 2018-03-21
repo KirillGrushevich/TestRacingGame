@@ -22,12 +22,12 @@ public class GrenadeLauncher : MonoBehaviour
 
 	private void Start()
 	{
-        InputManager.Instance.InputAction += Shoot;
+        InputManager.InputAction += Shoot;
 	}
 
 	private void OnDestroy()
 	{
-        InputManager.Instance.InputAction -= Shoot;
+        InputManager.InputAction -= Shoot;
 	}
 
 
