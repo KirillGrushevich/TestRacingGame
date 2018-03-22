@@ -19,10 +19,12 @@ public class GrenadeLauncher : MonoBehaviour
 
     public Coroutine WaitProcess { get; set; }
 
+    private Rigidbody rootRig;
 
 	private void Start()
 	{
         InputManager.InputAction += Shoot;
+        rootRig = transform.root.GetComponent<Rigidbody>();
 	}
 
 	private void OnDestroy()
@@ -46,7 +48,12 @@ public class GrenadeLauncher : MonoBehaviour
             return;
 
         GameObject obj = Instantiate(Grenade, position, Quaternion.LookRotation(direction));
-        obj.GetComponent<Rigidbody>().AddForce(direction * Impulse, ForceMode.Impulse);
+        Rigidbody rig = obj.GetComponent<Rigidbody>();
+        if(rootRig)
+        {
+            rig.velocity = rootRig.velocity;
+        }
+        rig.AddForce(direction * Impulse, ForceMode.Impulse);
 
         WaitProcess = StartCoroutine(WaitCoroutine(NextShotTimer));
     }

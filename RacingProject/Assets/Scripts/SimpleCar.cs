@@ -38,12 +38,13 @@ public class SimpleCar : MonoBehaviour
     [SerializeField]
     private Rigidbody Rig;
 
-    int fromWheelsUodate;
+    int fromWheelsUpdate;
     int toWheelsUpdate = 4;
 
 
     float steer;
     float torque;
+    Vector3 localVelocity;
     float brakeTorque;
 
 	private void Reset()
@@ -56,11 +57,11 @@ public class SimpleCar : MonoBehaviour
         InputManager.InputAction += UpdateAxes;
 
         if (CarDriveType == DriveType.RearWheelDrive)
-            fromWheelsUodate = 2;
+            fromWheelsUpdate = 2;
         if (CarDriveType == DriveType.FrontWheelDrive)
             toWheelsUpdate = 2;
 
-        Rig.centerOfMass = CenterOfMass.localPosition;
+        Rig.centerOfMass = CenterOfMass.localPosition; 
     }
 
 
@@ -77,29 +78,43 @@ public class SimpleCar : MonoBehaviour
         steer = vec.x * maxSteerAngle;
 
         accelerator = Mathf.Lerp(accelerator, vec.y, Time.deltaTime * 2f);
-        accelerator = vec.y > 0 ? accelerator : accelerator * -1;
 
-        if (Vector3.Dot(transform.forward, Rig.velocity.normalized) < 0 ) 
+        if (Mathf.Abs(vec.y) < 0.01f)
         {
-            print("back");
-            //torque = 0;
-            //brakeTorque = BrackeTorque;
-            //return;
+            brakeTorque = BrackeTorque;
         }
+        else
+        {
+            brakeTorque = 0;
+
+            if(speed > 1f)
+            {
+                if (localVelocity.z < 0 && vec.y > 0.01f || localVelocity.z > 0 && vec.y < -0.01f)
+                {
+                    brakeTorque = BrackeTorque;
+                }
+            }
+
+        }       
+
+
 
         if (speed >= MaxSpeed)
         {
             accelerator = Mathf.Lerp(accelerator, 0, Time.deltaTime * 10f);
         }
 
-        torque = vec.y * maxTorque * accelerator;
+        torque = vec.y * maxTorque * Mathf.Abs(accelerator);
     }
 
 
 	public void Update()
     {
         UpdateMeshes();
-        speed = Rig.velocity.magnitude;
+
+        localVelocity = transform.InverseTransformDirection(Rig.velocity);
+        speed = (Math.Abs(localVelocity.magnitude));
+
         if (speed > 0.01f)
             UpdateSpeed(this, speed, MaxSpeed);
     }
@@ -109,7 +124,7 @@ public class SimpleCar : MonoBehaviour
         WheelCollider[0].steerAngle = steer;
         WheelCollider[1].steerAngle = steer;
 
-        for (int i = fromWheelsUodate; i < toWheelsUpdate; i++)
+        for (int i = fromWheelsUpdate; i < toWheelsUpdate; i++)
         {
             WheelCollider[i].motorTorque = torque;
             WheelCollider[i].brakeTorque = brakeTorque;
