@@ -47,7 +47,9 @@ public class GrenadeLauncher : MonoBehaviour
         if (WaitProcess != null)
             return;
 
-        GameObject obj = Instantiate(Grenade, position, Quaternion.LookRotation(direction));
+        GameObject obj = ObjectsPool.Instance.GetObject(Grenade);
+        obj.transform.position = position;
+        obj.transform.rotation = Quaternion.LookRotation(direction);
         Rigidbody rig = obj.GetComponent<Rigidbody>();
         if(rootRig)
         {

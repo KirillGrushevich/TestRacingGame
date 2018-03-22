@@ -12,8 +12,8 @@ public class Grenade : MonoBehaviour
 
 	private void OnCollisionEnter(Collision collision)
 	{
-        GameObject obj = Instantiate(Explosion, transform.position, transform.rotation);
-        Destroy(obj, 1f);
+        GameObject obj = ObjectsPool.Instance.GetObject(Explosion);
+        obj.transform.position = transform.position;
 
         var health = collision.gameObject.GetComponent<IHealth>();
         if(health != null)
@@ -22,6 +22,6 @@ public class Grenade : MonoBehaviour
 
         }
 
-        Destroy(gameObject);
+        gameObject.SetActive(false);
 	}
 }

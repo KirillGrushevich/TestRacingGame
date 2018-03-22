@@ -7,7 +7,7 @@ public class Health : MonoBehaviour, IHealth
     [SerializeField]
     private int MaxHp = 2;
 
-	private void Start()
+    public void Start()
 	{
         HP = MaxHp;
 	}
@@ -19,7 +19,13 @@ public class Health : MonoBehaviour, IHealth
 
     public void Die()
     {
-        Destroy(gameObject);
+        gameObject.AddComponent<ObjectReconstruction>();
+        GetComponent<Rigidbody>().isKinematic = true;
+        foreach (Transform transf in transform)
+        {
+            transf.gameObject.SetActive(false);
+
+        }
     }
 
     public void GetDamage(int damage)
